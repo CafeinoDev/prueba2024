@@ -1,0 +1,17 @@
+{
+    "name": "andy/prueba2024",
+    "description": "LG Prueba Técnica",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "LG\\App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Andy Alvarado",
+            "email": "andyalvarado1997@gmail.com"
+        }
+    ],
+    "require": {}
+}

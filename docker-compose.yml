@@ -1,0 +1,43 @@
+version: "3.8"
+
+services:
+  php-apache:
+    build:
+      context: ./
+      dockerfile: ./docker/php-apache/Dockerfile
+    container_name: lg_server
+    environment:
+      COMPOSER_ALLOW_SUPERUSER: 1
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/var/www/html/
+      - ./docker/config/php.ini:/usr/local/etc/php/php.ini
+#    command: composer install
+    links:
+      - mysql
+
+  composer:
+    build:
+      context: ./
+      dockerfile: ./docker/composer/Dockerfile
+    container_name: lg_composer
+    command: composer install
+    volumes:
+      - ./:/var/www/html/
+    links:
+      - php-apache
+
+  mysql:
+    image: mysql:8.3.0
+    container_name: lg_mysql
+    environment:
+      MYSQL_DATABASE: lg_db
+      MYSQL_USER: lg_user
+      MYSQL_PASSWORD: lg_password
+      MYSQL_ROOT_PASSWORD: lg_root_password
+    ports:
+      - "3306:3306"
+#    volumes:
+#      - ./mysql:/var/lib/mysql
+#      - ./docker/db_backup:/docker-entrypoint-initdb.d
