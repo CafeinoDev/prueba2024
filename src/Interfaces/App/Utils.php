@@ -12,7 +12,7 @@ class Utils
      * @param array $params
      * @return string|null
      */
-    public static function matchRoute(string $url, array $routes, array $params = []): ?string
+    public static function matchRoute(string $url, array $routes, array $params = []): mixed
     {
         $url = array_values(array_filter(explode('/', $url)));
         foreach ($routes as $route) {
@@ -37,7 +37,7 @@ class Utils
                 }
 
                 if(count($params))
-                    return $endpoint;
+                    return [$endpoint, $params];
             }
         }
 
@@ -50,7 +50,7 @@ class Utils
      * @param array $params
      * @return mixed
      */
-    public static function dataGet(array $arr, string $key, array $params = []): mixed
+    public static function dataGet(array $arr, string $key): mixed
     {
         if (empty($key)) {
             return null;
@@ -67,7 +67,7 @@ class Utils
             }
         }
 
-        $endpoint = self::matchRoute($keysArr[1], $routesArr, $params);
+        list($endpoint, $params) = self::matchRoute($keysArr[1], $routesArr);
 
         $i = 0;
 
@@ -75,7 +75,7 @@ class Utils
             foreach($arr as $httpMethod => $routes) {
                 foreach($routes as $key => $method) {
                     if($key === $endpoint && $httpMethod === $keysArr[0]) {
-                        return $method;
+                        return [$method, $params];
                     }
                 }
             }
@@ -91,7 +91,7 @@ class Utils
 
                 if(!array_key_exists($keysArr[$i], $nextArr)) break;
 
-                if($keysArr[$i] === $searchedKey) return $nextArr[$keysArr[$i]];
+                if($keysArr[$i] === $searchedKey) return [$nextArr[$keysArr[$i]], $params];
 
                 $nextArr = $nextArr[$keysArr[$i]];
             }

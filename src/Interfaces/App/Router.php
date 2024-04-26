@@ -55,10 +55,10 @@ class Router
         ];
     }
 
-    protected function extractAction(mixed $action, string $seperator = '@'): array {
+    protected function extractAction(mixed $action, string $separator = '@'): array {
         if(is_array($action)) return $action;
 
-        $sepIdx = strpos($action, $seperator);
+        $sepIdx = strpos($action, $separator);
 
         $controller = substr($action, 0, $sepIdx);
         $function = substr($action, $sepIdx + 1, strlen($action));
@@ -68,7 +68,7 @@ class Router
 
     public function route(string $method, string $uri): bool {
 
-        $result = Utils::dataGet($this->routes, $method .".". $uri);
+        list($result, $params) = Utils::dataGet($this->routes, $method .".". $uri);
 
         if (!$result) Utils::abort("Route not found", 404);
 
@@ -80,8 +80,8 @@ class Router
             $controllerInstance = new $controller();
 
             if(method_exists($controllerInstance, $function)) {
-
-                $controllerInstance->$function();
+                $controllerInstance->params = $params;
+                $controllerInstance->$function($params);
                 return true;
 
             } else {

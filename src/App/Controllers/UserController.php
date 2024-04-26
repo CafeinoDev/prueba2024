@@ -17,6 +17,7 @@ final class UserController extends BaseController implements UserServiceInterfac
     protected readonly UserService    $userService;
     protected readonly array          $data;
     protected readonly Validator      $validator;
+    public array|null                     $params;
 
     public function __construct()
     {
@@ -51,18 +52,24 @@ final class UserController extends BaseController implements UserServiceInterfac
         }
     }
 
-    public function read(): void
+    public function view(): void
     {
-        var_dump('Test');
-    }
+        try {
+            $this->validator->validate(
+                $this->params,
+                [
+                    'id' => ['required', 'isNumeric']
+                ]);
 
-    public function update(): void
-    {
-        // TODO: Implement update() method.
-    }
+            $user = $this->userService->view((int)$this->params['id'], $this->userRepository);
 
-    public function delete(): void
-    {
-        // TODO: Implement delete() method.
+            $this->jsonResponse([
+                'data' => $user
+            ], 200);
+        } catch (\Exception $exception) {
+            $this->jsonResponse([
+                'message' => 'Error consulting the user: ' . $exception->getMessage()
+            ], $exception->getCode());
+        }
     }
 }

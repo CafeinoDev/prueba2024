@@ -84,21 +84,21 @@ class UserRepository implements UserRepositoryInterface
             $user->id()->value(),
         ]);
 
-        $user = $stmt->fetch();
+        $user = $stmt->fetch(\PDO::FETCH_ASSOC);
 
         return UserMapper::mapUser($user);
     }
 
-    final public function search(int $id): ?User
+    final public function search(int $id): ?array
     {
         $stmt = $this->pdo->prepare('SELECT * FROM users WHERE id = :id');
         $stmt->execute([
             'id' => $id
         ]);
 
-        $user = $stmt->fetch();
+        $user = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-        return $user ? UserMapper::mapUser($user) : null;
+        return $user ?? null;
     }
 
 

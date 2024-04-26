@@ -54,4 +54,11 @@ class Validator
             throw new InvalidArgumentException("$field must be no more than $maxLength characters long", 400);
         }
     }
+
+    private function isNumeric(string $field, int $value): void
+    {
+        if (!is_numeric($value)) {
+            throw new InvalidArgumentException("$field must be a number", 400);
+        }
+    }
 }

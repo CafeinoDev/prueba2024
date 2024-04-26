@@ -22,6 +22,6 @@ final class RoutesController  {
         // API Endpoints
         $router->get(self::API_PATH  . "/users", [\LG\App\Controllers\UserController::class, 'all']);
         $router->post(self::API_PATH . "/user", [\LG\App\Controllers\UserController::class, 'create']);
-        $router->get(self::API_PATH  . "/user/{id}", [\LG\App\Controllers\UserController::class, 'read']);
+        $router->get(self::API_PATH  . "/user/{id}", [\LG\App\Controllers\UserController::class, 'view']);
     }
 }

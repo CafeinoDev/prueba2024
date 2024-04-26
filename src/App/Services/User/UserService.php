@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace LG\App\Services\User;
 
 use LG\App\Shared\BaseController;
+use LG\Domain\User\User;
 use LG\Domain\User\UserEmail;
 use LG\Domain\Wallet\WalletBalance;
 use LG\Infrastructure\Persistence\User\UserMapper;
@@ -32,18 +33,8 @@ final class UserService
         return 'Registrar';
     }
 
-    public function read(): void
+    public function view(int $id, UserRepository $userRepository): ?array
     {
-        // TODO: Implement read() method.
-    }
-
-    public function update(): void
-    {
-        // TODO: Implement update() method.
-    }
-
-    public function delete(): void
-    {
-        // TODO: Implement delete() method.
+        return $userRepository->search($id);
     }
 }

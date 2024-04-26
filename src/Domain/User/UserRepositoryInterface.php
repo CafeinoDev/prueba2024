@@ -12,7 +12,7 @@ interface UserRepositoryInterface
 
     public function update(User $user): User;
 
-    public function search(int $id): ?User;
+    public function search(int $id): ?array;
 
     public function searchByEmail(string $email): ?User;
 
