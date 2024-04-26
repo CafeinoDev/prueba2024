@@ -6,6 +6,7 @@ namespace LG\Domain\User;
 
 use LG\Domain\Shared\CreatedAt;
 use LG\Domain\Shared\UpdatedAt;
+use LG\Domain\Wallet\WalletId;
 use LG\Shared\Domain\Aggregate\AggregateRoot;
 
 final class User extends AggregateRoot
@@ -15,9 +16,10 @@ final class User extends AggregateRoot
         private readonly UserFullName   $fullName,
         private readonly UserDocumentId $documentId,
         private readonly UserEmail      $email,
-        private UserBalance             $balance,
+        private WalletId                $walletId,
+        private UserType                $userType,
         private readonly CreatedAt      $createdAt,
-        private UpdatedAt               $updatedAt,
+        private UpdatedAt               $updatedAt
     ) {}
 
     public static function create(
@@ -25,24 +27,21 @@ final class User extends AggregateRoot
         UserFullName   $fullName,
         UserDocumentId $documentId,
         UserEmail      $email,
-        UserBalance    $balance,
+        WalletId       $walletId,
+        UserType       $userType,
         CreatedAt      $createdAt,
-        UpdatedAt      $updatedAt,
+        UpdatedAt      $updatedAt
     ): self {
         return new self(
             $id,
             $fullName,
             $documentId,
             $email,
-            $balance,
+            $walletId,
+            $userType,
             $createdAt,
             $updatedAt
         );
-    }
-
-    public function updateBalance(UserBalance $newBalance): void
-    {
-        $this->balance = $newBalance;
     }
 
     public function refreshUpdatedAt(UpdatedAt $newUpdatedAt): void

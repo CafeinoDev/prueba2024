@@ -9,13 +9,13 @@
 - **documentId**: (Único) Documento de identidad.
 - **email**: (Único) correo electrónico.
 - **password**: Contraseña (hasheada).
-- **balance**: Monto disponible.
-- **createdAt**: Creación de la entidad.
-- **updatedAt**: Última actualización.
+- **walletId**: PK de la billetera.
+- **userType**: Rol del usuario. REGULAR | MERCHANT.
+- **createdAt**: Fecha de creación de la entidad.
+- **updatedAt**: Fecha de última actualización.
 
 ### Methods
 - **create**: Crea una instancia.
-- **updateBalance**: Actualiza el balance.
 - **refreshUpdatedAt**: Actualiza el updatedAt
 ### JSON
 
@@ -26,7 +26,8 @@
   "documentId": "99988877",
   "email": "andy@yopmail.com",
   "password": "********",
-  "balance": 100,
+  "walletId": 1,
+  "userType": "MERCHANT",
   "createdAt": "2024-01-01T00:00:00-05:00",
   "updatedAt": "2024-01-01T00:00:00-05:00"
 }

@@ -1,30 +1,25 @@
 # Domain Model
 
-## Transaction
+## Wallet
 
 ### Properties
 
 - **id**: (Único) PK.
-- **senderId**: PK de quien realiza la transacción.
-- **receiverId**: PK de quien recibe la transacción.
-- **amount**: Cantidad enviada.
-- **status**: Estado de la transacción.
+- **balance**: Saldo disponible en la billetera.
 - **createdAt**: Fecha de creación de la entidad.
 - **updatedAt**: Fecha de última actualización.
 
 ### Methods
 - **create**: Crea una instancia.
-- **updateBalance**: Actualiza el balance.
+- **addFunds**: Añade fondos.
+- **deductFunds**: Deduce fondos.
 - **refreshUpdatedAt**: Actualiza el updatedAt
 ### JSON
 
 ```json
 {
   "id": 1,
-  "senderId": 1,
-  "receiverId": 2,
-  "amount": 100,
-  "status": "PENDING",
+  "balance": 100,
   "createdAt": "2024-01-01T00:00:00-05:00",
   "updatedAt": "2024-01-01T00:00:00-05:00"
 }

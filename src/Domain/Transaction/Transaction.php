@@ -18,7 +18,7 @@ final class Transaction extends AggregateRoot
         private readonly TransactionAmount $amount,
         private TransactionStatus          $status,
         private readonly CreatedAt         $createdAt,
-        private UpdatedAt                  $updatedAt,
+        private UpdatedAt                  $updatedAt
     ) {}
 
     public static function create(
@@ -28,7 +28,7 @@ final class Transaction extends AggregateRoot
         TransactionAmount $amount,
         TransactionStatus $status,
         CreatedAt         $createdAt,
-        UpdatedAt         $updatedAt,
+        UpdatedAt         $updatedAt
     ): self {
         $transaction = new self(
             $id,
@@ -40,7 +40,7 @@ final class Transaction extends AggregateRoot
             $updatedAt
         );
 
-// TODO: Created Domain Event
+// TODO: Created Domain Event, Dispatch Email
 //        $transaction->record();
 
         return $transaction;
