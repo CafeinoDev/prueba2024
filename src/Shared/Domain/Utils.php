@@ -18,6 +18,11 @@ class Utils
         return $date->format(DateTimeInterface::ATOM);
     }
 
+    public static function newDate(): string
+    {
+        return self::dateToString(new \DateTimeImmutable());
+    }
+
     /**
      * @param string $date
      * @return \DateTimeImmutable

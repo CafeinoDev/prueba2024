@@ -43,4 +43,44 @@ final class User extends AggregateRoot
             $updatedAt
         );
     }
+
+    public function id(): UserId
+    {
+        return $this->id;
+    }
+
+    public function fullName(): UserFullName
+    {
+        return $this->fullName;
+    }
+
+    public function document(): UserDocument
+    {
+        return $this->document;
+    }
+
+    public function email(): UserEmail
+    {
+        return $this->email;
+    }
+
+    public function walletId(): WalletId
+    {
+        return $this->walletId;
+    }
+
+    public function userType(): UserType
+    {
+        return $this->userType;
+    }
+
+    public function createdAt(): CreatedAt
+    {
+        return $this->createdAt;
+    }
+
+    public function updatedAt(): UpdatedAt
+    {
+        return $this->updatedAt;
+    }
 }

@@ -12,9 +12,8 @@ use LG\Shared\Domain\Aggregate\AggregateRoot;
 final class Wallet extends AggregateRoot
 {
     public function __construct(
-        private readonly WalletId   $walletId,
-        private WalletBalance       $walletBalance,
-        private readonly UserId     $userId,
+        private readonly WalletId   $id,
+        private WalletBalance       $balance,
         private readonly CreatedAt  $createdAt,
         private UpdatedAt           $updatedAt
     ) {}
@@ -22,18 +21,36 @@ final class Wallet extends AggregateRoot
     public static function create(
         WalletId      $walletId,
         WalletBalance $walletBalance,
-        UserId        $userId,
         CreatedAt     $createdAt,
         UpdatedAt     $updatedAt
     ): self {
         $wallet = new Wallet(
             $walletId,
             $walletBalance,
-            $userId,
             $createdAt,
             $updatedAt
         );
 
         return $wallet;
+    }
+
+    public function id(): WalletId
+    {
+        return $this->id;
+    }
+
+    public function balance(): WalletBalance
+    {
+        return $this->balance;
+    }
+
+    public function createdAt(): CreatedAt
+    {
+        return $this->createdAt;
+    }
+
+    public function updatedAt(): UpdatedAt
+    {
+        return $this->updatedAt;
     }
 }
