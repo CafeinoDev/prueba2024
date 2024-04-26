@@ -53,7 +53,7 @@ final class UserController extends BaseController implements UserServiceInterfac
 
     public function read(): void
     {
-        // TODO: Implement read() method.
+        var_dump('Test');
     }
 
     public function update(): void

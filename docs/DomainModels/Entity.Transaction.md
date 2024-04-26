@@ -14,8 +14,8 @@
 
 ### Methods
 - **create**: Crea una instancia.
-- **updateBalance**: Actualiza el balance.
-- **refreshUpdatedAt**: Actualiza el updatedAt
+- **updateStatus**: Actualiza el status.
+- **refreshUpdatedAt**: Actualiza el updatedAt.
 ### JSON
 
 ```json

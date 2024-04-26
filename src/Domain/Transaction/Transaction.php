@@ -46,6 +46,8 @@ final class Transaction extends AggregateRoot
         return $transaction;
     }
 
+
+
     public function updateStatus(TransactionStatus $newStatus): void
     {
         $this->status = $newStatus;
