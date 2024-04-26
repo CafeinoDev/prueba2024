@@ -38,6 +38,6 @@ services:
       MYSQL_ROOT_PASSWORD: lg_root_password
     ports:
       - "3306:3306"
-#    volumes:
+    volumes:
 #      - ./mysql:/var/lib/mysql
-#      - ./docker/db_backup:/docker-entrypoint-initdb.d
+      - ./docker/mysql:/docker-entrypoint-initdb.d

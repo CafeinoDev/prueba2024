@@ -6,4 +6,4 @@ namespace LG\Domain\User;
 
 use LG\Shared\Domain\ValueObject\StringValueObject;
 
-final class UserDocumentId extends StringValueObject {}
+final class UserDocument extends StringValueObject {}

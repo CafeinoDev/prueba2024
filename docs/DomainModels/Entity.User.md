@@ -6,7 +6,7 @@
 
 - **id**: (Único) PK.
 - **fullName**: Nombre completo.
-- **documentId**: (Único) Documento de identidad.
+- **document**: (Único) Documento de identidad.
 - **email**: (Único) correo electrónico.
 - **password**: Contraseña (hasheada).
 - **walletId**: PK de la billetera.
@@ -23,7 +23,7 @@
 {
   "id": 1,
   "fullName": "Andy Alvarado",
-  "documentId": "99988877",
+  "document": "99988877",
   "email": "andy@yopmail.com",
   "password": "********",
   "walletId": 1,

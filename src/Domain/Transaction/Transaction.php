@@ -50,9 +50,4 @@ final class Transaction extends AggregateRoot
     {
         $this->status = $newStatus;
     }
-
-    public function refreshUpdatedAt(UpdatedAt $newUpdatedAt): void
-    {
-        $this->updatedAt = $newUpdatedAt;
-    }
 }
