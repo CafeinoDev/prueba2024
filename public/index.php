@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-require "../core/helpers.php";
-require "../core/Router.php";
-
 const BASE_PATH = __DIR__ . '/../';
+
+use LG\Interfaces\Api\RoutesController;
+use LG\Interfaces\App\Router;
 
 require BASE_PATH.'vendor/autoload.php';
 
 spl_autoload_register(function($class) {
     $class = str_replace("\\", DIRECTORY_SEPARATOR, $class);
-    require basePath("{$class}.php");
+    require \LG\Interfaces\App\Utils::basePath("{$class}.php");
 });
 
 $router = Router::getRouter();
-require BASE_PATH . "routes/api.php";
+RoutesController::registerRoutes($router);
 
 $method = $_SERVER['REQUEST_METHOD'];
 $uri = $_SERVER['REQUEST_URI'];

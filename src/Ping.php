@@ -1,9 +1,16 @@
 <?php
 
-namespace LG\App;
+namespace LG;
 
-class Ping {
-    public function ping() {
-        echo 'Hello world!';
+use LG\App\Shared\BaseController;
+
+class Ping extends BaseController {
+    public function ping()
+    {
+        $response = [
+            'message' => 'I\'m a teapot!'
+        ];
+
+        $this->jsonResponse($response);
     }
 }

@@ -4,7 +4,7 @@
     "type": "project",
     "autoload": {
         "psr-4": {
-            "LG\\App\\": "src/"
+            "LG\\": "src/"
         }
     },
     "authors": [
@@ -13,5 +13,7 @@
             "email": "andyalvarado1997@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "ramsey/uuid": "4.7.5"
+    }
 }

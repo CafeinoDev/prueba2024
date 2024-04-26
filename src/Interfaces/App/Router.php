@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace LG\Interfaces\App;
+
 class Router
 {
     private static $router;
@@ -26,17 +28,17 @@ class Router
         $this->register($uri, $action, "GET");
     }
 
-    public function post(string $uri, string $action): void {
+    public function post(string $uri, mixed $action): void {
 
         $this->register($uri, $action, "POST");
     }
 
-    public function put(string $uri, string $action): void {
+    public function put(string $uri, mixed $action): void {
 
         $this->register($uri, $action, "PUT");
     }
 
-    public function delete(string $uri, string $action): void{
+    public function delete(string $uri, mixed $action): void{
 
         $this->register($uri, $action, "DELETE");
     }
@@ -66,9 +68,9 @@ class Router
 
     public function route(string $method, string $uri): bool {
 
-        $result = dataGet($this->routes, $method .".". $uri);
+        $result = Utils::dataGet($this->routes, $method .".". $uri);
 
-        if (!$result) abort("Route not found", 404);
+        if (!$result) Utils::abort("Route not found", 404);
 
         $controller = $result['controller'];
         $function = $result['method'];
@@ -84,7 +86,7 @@ class Router
 
             } else {
 
-                abort("No method {$function} on class {$controller}", 500);
+                Utils::abort("No method {$function} on class {$controller}", 500);
             }
         }
 
