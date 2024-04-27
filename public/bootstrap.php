@@ -7,6 +7,9 @@ use LG\Infrastructure\Persistence\User\UserRepository;
 use LG\Infrastructure\Persistence\Transaction\TransactionRepository;
 use LG\Infrastructure\Notification\EmailNotificationService;
 
+/**
+ * Bootstrap de la aplicación.
+ */
 class Bootstrap
 {
     public static function run(): void

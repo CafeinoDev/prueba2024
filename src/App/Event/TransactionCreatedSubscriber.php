@@ -2,6 +2,7 @@
 
 namespace LG\App\Event;
 
+use Exception;
 use LG\Domain\Transaction\Event\TransactionCreated;
 use LG\Domain\Notification\NotificationServiceInterface;
 use LG\Domain\Transaction\TransactionId;
@@ -34,6 +35,10 @@ class TransactionCreatedSubscriber
      * y actualiza el estado de la transacción en la base de datos.
      * En caso de error, el estado de la transacción cambia a FAILED_EMAIL
      * para su manejo futuro.
+     *
+     * @param TransactionCreated $event
+     * @return void
+     * @throws Exception Si el usuario no existe
      */
     final public function handleTransactionCreated(TransactionCreated $event): void
     {
@@ -44,7 +49,7 @@ class TransactionCreatedSubscriber
         $receiver = $this->userRepository->search($receiverId);
 
         if ($receiver === null) {
-            throw new \Exception('Receiver of the transaction not found', 400);
+            throw new Exception('Receiver of the transaction not found', 400);
         }
 
         $date = $data['timestamp']->format('d-m-Y H:i');
@@ -54,9 +59,9 @@ class TransactionCreatedSubscriber
         try {
             $this->notificationService->sendNotification($receiver['email'], $message);
             $this->transactionRepository->updateStatus(new TransactionId($data['transaction_id']), 'COMPLETED');
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->transactionRepository->updateStatus(new TransactionId($data['transaction_id']), 'FAILED_EMAIL');
-            throw new \Exception($exception->getMessage(), '503');
+            throw new Exception($exception->getMessage(), '503');
         }
     }
 }

@@ -74,6 +74,15 @@ final class TransactionService implements TransactionServiceInterface
         return $transaction;
     }
 
+    /**
+     * Deduce la cantidad enviada de la billetera del usuario
+     *
+     * @param WalletId $walletId
+     * @param float $amount
+     * @param UserRepository $userRepository
+     * @return void
+     * @throws \Exception Si el usuario no tiene fondos suficientes para enviar
+     */
     public static function deductFundsFromWallet(WalletId $walletId, float $amount, UserRepository $userRepository): void
     {
         $wallet = $userRepository->findWallet($walletId);
@@ -88,6 +97,14 @@ final class TransactionService implements TransactionServiceInterface
         $userRepository->updateWalletBalance($walletId, $newBalance);
     }
 
+    /**
+     * Añade los fondos a la billetera del usuario
+     *
+     * @param WalletId $walletId
+     * @param float $amount
+     * @param UserRepository $userRepository
+     * @return void
+     */
     public static function addFundsToWallet(WalletId $walletId, float $amount, UserRepository $userRepository): void
     {
         $wallet = $userRepository->findWallet($walletId);

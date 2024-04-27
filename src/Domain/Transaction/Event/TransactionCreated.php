@@ -8,6 +8,9 @@ use LG\Domain\Shared\Event\DomainEvent;
 use LG\Domain\Transaction\Transaction;
 use LG\Shared\Domain\Utils;
 
+/**
+ * Evento que representa la creación de una transacción.
+ */
 class TransactionCreated implements DomainEvent
 {
     private Transaction        $transaction;

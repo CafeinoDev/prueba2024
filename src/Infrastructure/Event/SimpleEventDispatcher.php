@@ -28,11 +28,23 @@ class SimpleEventDispatcher implements EventDispatcher
         return self::$instance;
     }
 
+    /**
+     * Añade un suscriptor al dispatcher.
+     *
+     * @param object $subscriber
+     * @return void
+     */
     public function addSubscriber(object $subscriber): void
     {
         $this->subscribers[] = $subscriber;
     }
 
+    /**
+     * Despacha un evento a los suscriptores
+     *
+     * @param DomainEvent $event
+     * @return void
+     */
     public function dispatch(DomainEvent $event): void
     {
         foreach ($this->subscribers as $subscriber) {
@@ -43,6 +55,13 @@ class SimpleEventDispatcher implements EventDispatcher
         }
     }
 
+    /**
+     * Obtiene el nombre del método de evento de un suscriptor
+     *
+     * @param object $subscriber
+     * @param DomainEvent $event
+     * @return string
+     */
     private function getHandlerMethod(object $subscriber, DomainEvent $event): string
     {
         return 'handle' . (new \ReflectionClass($event))->getShortName();

@@ -11,11 +11,27 @@ use LG\Infrastructure\Persistence\User\UserRepository;
 
 final class UserService
 {
+    /**
+     * Busca todos los usuarios
+     *
+     * @param UserRepository $userRepository
+     * @return array|null
+     */
     public function searchAll(UserRepository $userRepository): ?array
     {
         return $userRepository->searchAll();
     }
 
+    /**
+     * Crea un nuevo usuario
+     *
+     * @param User $user
+     * @param UserRepository $userRepository
+     * @param float $balance
+     * @param string $password
+     * @return void
+     * @throws \Exception Si el correo o el documento ya existen
+     */
     public function create(User $user, UserRepository $userRepository, float $balance, string $password): void
     {
         if($userRepository->searchByEmail($user->email()->value())) {
@@ -33,6 +49,14 @@ final class UserService
         );
     }
 
+    /**
+     * Devuelve el detalle de un usuario
+     *
+     * @param UserId $userId
+     * @param UserRepository $userRepository
+     * @return array|null
+     * @throws \Exception Si no se encuentra el usuario
+     */
     public function view(UserId $userId, UserRepository $userRepository): ?array
     {
         return $userRepository->search($userId);

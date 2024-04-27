@@ -2,6 +2,9 @@
 
 namespace LG\Infrastructure\Persistence\Shared;
 
+/**
+ * Clase que gestiona la conexión a la base de datos.
+ */
 class Database
 {
     private static $instance;
