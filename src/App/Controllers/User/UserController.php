@@ -54,7 +54,7 @@ final class UserController extends BaseController implements UserControllerInter
                     'password'  => ['required', 'minLength:8'],
                     'document'  => ['required', 'maxLength:8', 'minLength:8'],
                     'full_name' => ['required', 'minLength:4', 'maxLength:100'],
-                    'balance'   => ['required']
+                    'balance'   => ['required', 'isNumeric']
                 ]
             );
 
@@ -95,10 +95,5 @@ final class UserController extends BaseController implements UserControllerInter
                 'message' => 'Error consulting the user: ' . $exception->getMessage()
             ], $exception->getCode());
         }
-    }
-
-    public function searchAll(): ?array
-    {
-        // TODO: Implement searchAll() method.
     }
 }

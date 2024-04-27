@@ -10,7 +10,7 @@ final class RoutesController  {
     public const API_PATH = '/api/v1';
 
     /**
-     * Register the endpoints
+     * Registro de los endpoints
      *
      * @param Router $router
      * @return void

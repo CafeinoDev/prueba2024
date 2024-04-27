@@ -6,12 +6,6 @@ namespace LG\Interfaces\App;
 
 class Utils
 {
-    /**
-     * @param string $url
-     * @param array $routes
-     * @param array $params
-     * @return string|null
-     */
     public static function matchRoute(string $url, array $routes, array $params = []): mixed
     {
         $url = array_values(array_filter(explode('/', $url)));
@@ -44,12 +38,6 @@ class Utils
         return null;
     }
 
-    /**
-     * @param array $arr
-     * @param string $key
-     * @param array $params
-     * @return mixed
-     */
     public static function dataGet(array $arr, string $key): mixed
     {
         if (empty($key)) {
@@ -100,21 +88,11 @@ class Utils
         return null;
     }
 
-    /**
-     * @param $path
-     * @return string
-     */
     public static function basePath($path): string
     {
         return BASE_PATH . $path;
     }
 
-
-    /**
-     * @param $message
-     * @param $code
-     * @return void
-     */
     public static function abort($message, $code = 404): void
     {
         http_response_code($code);

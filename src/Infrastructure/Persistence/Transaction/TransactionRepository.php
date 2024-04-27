@@ -57,9 +57,4 @@ class TransactionRepository implements TransactionRepositoryInterface
             $transactionId->value()
         ]);
     }
-
-    public function cancelTransaction(Transaction $transaction, string $status): void
-    {
-        // TODO: Implement cancelTransaction() method.
-    }
 }

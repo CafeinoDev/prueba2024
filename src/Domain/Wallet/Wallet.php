@@ -40,12 +40,10 @@ final class Wallet
 
     public function addFunds(float $amount) {
         $this->balance =  new WalletBalance($this->balance->value() + $amount);
-        // TODO: Update with new balance
     }
 
     public function deductFunds(float $amount) {
         $this->balance =  new WalletBalance($this->balance->value() - $amount);
-        // TODO: Update with new balance
     }
 
     public function balance(): WalletBalance
