@@ -55,7 +55,7 @@ class Validator
         }
     }
 
-    private function isNumeric(string $field, int $value): void
+    private function isNumeric(string $field, $value): void
     {
         if (!is_numeric($value)) {
             throw new InvalidArgumentException("$field must be a number", 400);
