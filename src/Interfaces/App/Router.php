@@ -70,7 +70,7 @@ class Router
 
         list($result, $params) = Utils::dataGet($this->routes, $method .".". $uri);
 
-        if (!$result) Utils::abort("Route not found", 404);
+        if (!$result) Utils::abort("Method not allowed to this endpoint", 404);
 
         $controller = $result['controller'];
         $function = $result['method'];
