@@ -1,0 +1,102 @@
+{
+	"info": {
+		"_postman_id": "6658e97d-9a93-4e5c-8acd-ae0300cf6f49",
+		"name": "LG - Andy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33808409"
+	},
+	"item": [
+		{
+			"name": "Usuarios",
+			"item": [
+				{
+					"name": "Crear Usuario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"full_name\": \"Andy Alvarado\",\r\n    \"document\": \"87534445\",\r\n    \"email\": \"andy28@yopmail.com\",\r\n    \"user_type\": \"MERCHANT\",\r\n    \"password\": \"12345456\",\r\n    \"balance\": 150\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Entorno Local}}/user",
+							"host": [
+								"{{Entorno Local}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Detalle usuario",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Entorno Local}}/user/2",
+							"host": [
+								"{{Entorno Local}}"
+							],
+							"path": [
+								"user",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Todos los usuarios",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{Entorno Local}}/users",
+							"host": [
+								"{{Entorno Local}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transacción",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"senderId\": 2,\r\n    \"receiverId\": 1,\r\n    \"amount\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Entorno Local}}/transaction",
+					"host": [
+						"{{Entorno Local}}"
+					],
+					"path": [
+						"transaction"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
