@@ -8,6 +8,9 @@ use LG\Domain\Shared\CreatedAt;
 use LG\Domain\Shared\UpdatedAt;
 use LG\Domain\Wallet\WalletId;
 
+/**
+ * Entidad de un usuario
+ */
 final class User
 {
     public function __construct(

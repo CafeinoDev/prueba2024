@@ -31,6 +31,11 @@ final class TransactionController extends BaseController implements TransactionC
         $this->userRepository       = new UserRepository();
     }
 
+    /**
+     * Validamos y creamos la transacción
+     *
+     * @return void
+     */
     public function create(): void
     {
         try {
@@ -39,16 +44,26 @@ final class TransactionController extends BaseController implements TransactionC
                 [
                     'senderId'  => ['required', 'isNumeric'],
                     'receiverId'=> ['required', 'isNumeric'],
-                    'amount'    => ['required', 'isNumeric', 'minAmount:1']
+                    'amount'    => ['required', 'isNumeric', 'minAmount:1', 'maxAmount:200']
                 ]
             );
 
+            /**
+             * Creamos y persistimos la transacción en la base de datos.
+             * Se realiza la deducción de la cuenta del remitente.
+             * Se añade el monto a la cuenta del destinatario
+             * En caso de que la transacción no sea autorizada, se revierte.
+             */
             $transaction = $this->transactionService->create(
                 TransactionMapper::mapTransaction($this->data),
                 $this->transactionRepository,
                 $this->userRepository
             );
 
+            /**
+             * Creamos y despachamos el evento de la transacción creada.
+             * Esto realizará el envío de la notificación por correo o SMS.
+             */
             $event = new TransactionCreated($transaction);
             SimpleEventDispatcher::getInstance()->dispatch($event);
 

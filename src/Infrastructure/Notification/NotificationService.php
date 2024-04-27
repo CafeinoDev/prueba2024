@@ -6,6 +6,10 @@ namespace LG\Infrastructure\Notification;
 
 use LG\Domain\Notification\NotificationServiceInterface;
 
+/**
+ * Implementación de NotificationServiceInterface que delega el envío de notificaciones a otro servicio.
+ * Al utilizar la arquitectura hexagonal, podemos realizar cualquier implementación (en nuestro caso Correo o SMS)
+ */
 class NotificationService implements NotificationServiceInterface
 {
     private NotificationServiceInterface $notificationService;

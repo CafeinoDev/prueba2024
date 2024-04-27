@@ -28,7 +28,6 @@ class Utils
     {
         $curl = curl_init();
 
-        // Set common options for the request
         $options = [
             CURLOPT_URL => $url,
             CURLOPT_CUSTOMREQUEST => $method,

@@ -7,11 +7,17 @@ namespace LG\Infrastructure\Event;
 use LG\Domain\Shared\Event\DomainEvent;
 use LG\Domain\Shared\Event\EventDispatcher;
 
+/**
+ * Implementación de un event dispatcher
+ */
 class SimpleEventDispatcher implements EventDispatcher
 {
     private static ?EventDispatcher $instance    = null;
     private array                   $subscribers = [];
 
+    /**
+     * Ponemos el __construct clase en private para utilizar el patrón singleton
+     */
     private function __construct() {}
 
     public static function getInstance(): self

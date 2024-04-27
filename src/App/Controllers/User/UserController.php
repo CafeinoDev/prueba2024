@@ -7,7 +7,6 @@ namespace LG\App\Controllers\User;
 use LG\App\Services\User\UserService;
 use LG\App\Shared\BaseController;
 use LG\App\Shared\Validator;
-use LG\Domain\User\User;
 use LG\Domain\User\UserId;
 use LG\Infrastructure\Persistence\User\UserMapper;
 use LG\Infrastructure\Persistence\User\UserRepository;
@@ -16,9 +15,9 @@ final class UserController extends BaseController implements UserControllerInter
 {
     protected readonly UserRepository $userRepository;
     protected readonly UserService    $userService;
-    protected readonly ?array          $data;
+    protected readonly ?array         $data;
     protected readonly Validator      $validator;
-    public ?array                 $params;
+    public ?array                     $params;
 
     public function __construct()
     {
@@ -28,6 +27,11 @@ final class UserController extends BaseController implements UserControllerInter
         $this->validator      = new Validator();
     }
 
+    /**
+     * Listamos a todos los usuarios
+     *
+     * @return void
+     */
     public function all(): void
     {
         try {
@@ -44,6 +48,11 @@ final class UserController extends BaseController implements UserControllerInter
         }
     }
 
+    /**
+     * Validamos y creamos el usuario
+     *
+     * @return void
+     */
     public function create(): void
     {
         try {
@@ -58,6 +67,10 @@ final class UserController extends BaseController implements UserControllerInter
                 ]
             );
 
+            /**
+             * Creamos y persistimos el usuario en la base de datos.
+             * Se valida que no exista un usuario con el mismo correo o documento
+             */
             $this->userService->create(
                 UserMapper::mapUser($this->data),
                 $this->userRepository,
@@ -75,6 +88,11 @@ final class UserController extends BaseController implements UserControllerInter
         }
     }
 
+    /**
+     * Devolvemos la información de un usuario
+     *
+     * @return void
+     */
     public function view(): void
     {
         try {
@@ -84,8 +102,10 @@ final class UserController extends BaseController implements UserControllerInter
                     'id' => ['required', 'isNumeric']
                 ]);
 
-            $userId = new UserId((int)$this->params['id']);
-            $user = $this->userService->view($userId, $this->userRepository);
+            $user = $this->userService->view(
+                new UserId((int)$this->params['id']),
+                $this->userRepository
+            );
 
             $this->jsonResponse([
                 'data' => $user

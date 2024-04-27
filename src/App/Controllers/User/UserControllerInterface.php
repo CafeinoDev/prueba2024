@@ -4,7 +4,7 @@ namespace LG\App\Controllers\User;
 
 interface UserControllerInterface
 {
-    public function searchAll(): ?array;
+    public function all(): void;
 
     public function create(): void;
 

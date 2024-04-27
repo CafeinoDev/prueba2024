@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace LG\Interfaces\App;
 
+/**
+ * Enrutador HTTP básico para gestionar las rutas y las solicitudes HTTP.
+ */
 class Router
 {
     private static $router;

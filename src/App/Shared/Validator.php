@@ -6,8 +6,18 @@ namespace LG\App\Shared;
 
 use \InvalidArgumentException;
 
+/**
+ * Clase encargada de validar datos de acuerdo a reglas específicas.
+ */
 class Validator
 {
+    /**
+     * Valida las reglas definidas contra el arreglo enviado en la petición
+     *
+     * @param array $data
+     * @param array $rules
+     * @return void
+     */
     public function validate(array $data, array $rules): void
     {
         foreach ($rules as $field => $rule) {
@@ -27,6 +37,13 @@ class Validator
         }
     }
 
+    /**
+     * El campo es requerido
+     *
+     * @param string $field
+     * @param $value
+     * @return void
+     */
     private function required(string $field, $value): void
     {
         if (empty($value)) {
@@ -34,6 +51,13 @@ class Validator
         }
     }
 
+    /**
+     * El valor debe ser un correo
+     *
+     * @param string $field
+     * @param $value
+     * @return void
+     */
     private function email(string $field, $value): void
     {
         if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
@@ -41,6 +65,14 @@ class Validator
         }
     }
 
+    /**
+     * Debe tener un mínimo de caracteres
+     *
+     * @param string $field
+     * @param $value
+     * @param int $minLength
+     * @return void
+     */
     private function minLength(string $field, $value, int $minLength): void
     {
         if (strlen($value) < $minLength) {
@@ -48,6 +80,14 @@ class Validator
         }
     }
 
+    /**
+     * Debe tener un máximo de caracteres
+     *
+     * @param string $field
+     * @param $value
+     * @param int $maxLength
+     * @return void
+     */
     private function maxLength(string $field, $value, int $maxLength): void
     {
         if (strlen($value) > $maxLength) {
@@ -55,6 +95,13 @@ class Validator
         }
     }
 
+    /**
+     * Debe ser un valor numérico
+     *
+     * @param string $field
+     * @param $value
+     * @return void
+     */
     private function isNumeric(string $field, $value): void
     {
         if (!is_numeric($value)) {
@@ -62,7 +109,30 @@ class Validator
         }
     }
 
+    /**
+     * Debe tener un monto mínimo
+     *
+     * @param string $field
+     * @param $value
+     * @param $minValue
+     * @return void
+     */
     private function minAmount(string $field, $value, $minValue): void
+    {
+        if($value < $minValue) {
+            throw new InvalidArgumentException("$field must be a minimum of $minValue", 400);
+        }
+    }
+
+    /**
+     * Debe tener un monto máximo
+     *
+     * @param string $field
+     * @param $value
+     * @param $minValue
+     * @return void
+     */
+    private function maxAmount(string $field, $value, $minValue): void
     {
         if($value < $minValue) {
             throw new InvalidArgumentException("$field must be a minimum of $minValue", 400);

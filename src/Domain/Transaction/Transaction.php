@@ -8,14 +8,30 @@ use LG\Domain\Shared\CreatedAt;
 use LG\Domain\Shared\UpdatedAt;
 use LG\Domain\User\UserId;
 
+/**
+ * Entidad de una transacción
+ */
 final class Transaction
 {
-    public function __construct(private TransactionId $id, private readonly UserId $senderId, private readonly UserId $receiverId, private readonly TransactionAmount $amount, private TransactionStatus $status, private readonly CreatedAt $createdAt, private UpdatedAt $updatedAt)
-    {
-    }
+    public function __construct(
+        private TransactionId $id,
+        private readonly UserId $senderId,
+        private readonly UserId $receiverId,
+        private readonly TransactionAmount $amount,
+        private TransactionStatus $status,
+        private readonly CreatedAt $createdAt,
+        private UpdatedAt $updatedAt
+    ) {}
 
-    public static function create(TransactionId $id, UserId $senderId, UserId $receiverId, TransactionAmount $amount, TransactionStatus $status, CreatedAt $createdAt, UpdatedAt $updatedAt): self
-    {
+    public static function create(
+        TransactionId $id,
+        UserId $senderId,
+        UserId $receiverId,
+        TransactionAmount $amount,
+        TransactionStatus $status,
+        CreatedAt $createdAt,
+        UpdatedAt $updatedAt
+    ): self {
         $transaction = new self($id, $senderId, $receiverId, $amount, $status, $createdAt, $updatedAt);
 
         return $transaction;

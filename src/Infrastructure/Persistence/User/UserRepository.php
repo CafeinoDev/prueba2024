@@ -118,6 +118,9 @@ class UserRepository implements UserRepositoryInterface
 
         $user = $stmt->fetch(\PDO::FETCH_ASSOC);
 
+        if(!$user)
+            throw new \Exception('The user doesnt exists');
+
         return $user ?? null;
     }
 
