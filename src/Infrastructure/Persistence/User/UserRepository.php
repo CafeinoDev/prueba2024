@@ -111,7 +111,7 @@ class UserRepository implements UserRepositoryInterface
 
     final public function search(UserId $userId): ?array
     {
-        $stmt = $this->pdo->prepare('SELECT * FROM users WHERE id = :id');
+        $stmt = $this->pdo->prepare('SELECT id, full_name, document, email, user_type, created_at, updated_at FROM users WHERE id = :id');
         $stmt->execute([
             'id' => $userId->value()
         ]);
@@ -126,7 +126,7 @@ class UserRepository implements UserRepositoryInterface
 
     final public function searchAll(): ?array
     {
-        $stmt = $this->pdo->prepare('SELECT * FROM users');
+        $stmt = $this->pdo->prepare('SELECT id, full_name, document, email, user_type, created_at, updated_at FROM users');
         $stmt->execute();
 
         $users = $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -137,19 +137,20 @@ class UserRepository implements UserRepositoryInterface
 
     final public function searchByEmail(string $email): ?User
     {
-        $stmt = $this->pdo->prepare('SELECT * FROM users WHERE email = :email');
+        $stmt = $this->pdo->prepare('SELECT id, full_name, document, email, user_type, created_at, updated_at FROM users WHERE email = :email');
         $stmt->execute([
             'email' => $email
         ]);
 
         $user = $stmt->fetch();
 
+
         return $user ? UserMapper::mapUserFromDb($user) : null;
     }
 
     final public function searchByDocument(string $document): ?User
     {
-        $stmt = $this->pdo->prepare('SELECT * FROM users WHERE document = :document');
+        $stmt = $this->pdo->prepare('SELECT id, full_name, document, email, user_type, created_at, updated_at FROM users WHERE document = :document');
         $stmt->execute([
             'document' => $document
         ]);
