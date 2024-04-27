@@ -61,4 +61,11 @@ class Validator
             throw new InvalidArgumentException("$field must be a number", 400);
         }
     }
+
+    private function minAmount(string $field, $value, $minValue): void
+    {
+        if($value < $minValue) {
+            throw new InvalidArgumentException("$field must be a minimum of $minValue", 400);
+        }
+    }
 }

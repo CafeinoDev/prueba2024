@@ -4,37 +4,37 @@ declare(strict_types=1);
 
 namespace LG\App\Services\User;
 
-use LG\App\Shared\BaseController;
-use LG\Domain\User\User;
-use LG\Domain\User\UserEmail;
+use LG\Domain\User\UserId;
 use LG\Domain\Wallet\WalletBalance;
-use LG\Infrastructure\Persistence\User\UserMapper;
+use LG\Domain\User\User;
 use LG\Infrastructure\Persistence\User\UserRepository;
 
 final class UserService
 {
-
-    public function create(array $data, UserRepository $userRepository): string
+    public function searchAll(UserRepository $userRepository): ?array
     {
-        if($userRepository->searchByEmail($data['email'])) {
+        return $userRepository->searchAll();
+    }
+
+    public function create(User $user, UserRepository $userRepository, float $balance, string $password): void
+    {
+        if($userRepository->searchByEmail($user->email()->value())) {
             throw new \InvalidArgumentException('The email already exists.', 409);
         }
 
-        if($userRepository->searchByDocument($data['document'])) {
+        if($userRepository->searchByDocument($user->document()->value())) {
             throw new \InvalidArgumentException('The document is already in use.', 409);
         }
 
-        $user = $userRepository->save(
-            UserMapper::mapUserWithoutId($data),
-            new WalletBalance($data['balance']),
-            password_hash($data['password'], PASSWORD_DEFAULT)
+        $userRepository->save(
+            $user,
+            new WalletBalance($balance),
+            password_hash($password, PASSWORD_DEFAULT)
         );
-
-        return 'Registrar';
     }
 
-    public function view(int $id, UserRepository $userRepository): ?array
+    public function view(UserId $userId, UserRepository $userRepository): ?array
     {
-        return $userRepository->search($id);
+        return $userRepository->search($userId);
     }
 }

@@ -7,9 +7,8 @@ namespace LG\Domain\Wallet;
 use LG\Domain\Shared\CreatedAt;
 use LG\Domain\Shared\UpdatedAt;
 use LG\Domain\User\UserId;
-use LG\Shared\Domain\Aggregate\AggregateRoot;
 
-final class Wallet extends AggregateRoot
+final class Wallet
 {
     public function __construct(
         private readonly WalletId   $id,
@@ -37,6 +36,16 @@ final class Wallet extends AggregateRoot
     public function id(): WalletId
     {
         return $this->id;
+    }
+
+    public function addFunds(float $amount) {
+        $this->balance =  new WalletBalance($this->balance->value() + $amount);
+        // TODO: Update with new balance
+    }
+
+    public function deductFunds(float $amount) {
+        $this->balance =  new WalletBalance($this->balance->value() - $amount);
+        // TODO: Update with new balance
     }
 
     public function balance(): WalletBalance

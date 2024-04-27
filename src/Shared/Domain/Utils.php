@@ -9,10 +9,6 @@ use DateTimeImmutable;
 
 class Utils
 {
-    /**
-     * @param DateTimeInterface $date
-     * @return string
-     */
     public static function dateToString(DateTimeInterface $date): string
     {
         return $date->format(DateTimeInterface::ATOM);
@@ -23,33 +19,33 @@ class Utils
         return self::dateToString(new \DateTimeImmutable());
     }
 
-    /**
-     * @param string $date
-     * @return \DateTimeImmutable
-     * @throws \Exception
-     */
     public static function stringToDate(string $date): DateTimeImmutable
     {
         return new DateTimeImmutable($date);
     }
 
-    /**
-     * @param array $values
-     * @return string
-     * @throws \JsonException
-     */
-    public static function jsonEncode(array $values): string
+    public static function sendRequest(string $url, string $method = 'GET', array $headers = []): array
     {
-        return json_encode($values, JSON_THROW_ON_ERROR);
-    }
+        $curl = curl_init();
 
-    /**
-     * @param string $json
-     * @return array
-     * @throws \JsonException
-     */
-    public static function jsonDecode(string $json): array
-    {
-        return json_decode($json, true, flags: JSON_THROW_ON_ERROR);
+        // Set common options for the request
+        $options = [
+            CURLOPT_URL => $url,
+            CURLOPT_CUSTOMREQUEST => $method,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => $headers,
+        ];
+
+        curl_setopt_array($curl, $options);
+
+        $responseJson = curl_exec($curl);
+
+        if (curl_errno($curl)) {
+            throw new \Exception('cURL error: ' . curl_error($curl));
+        }
+
+        curl_close($curl);
+
+        return json_decode($responseJson, true);
     }
 }

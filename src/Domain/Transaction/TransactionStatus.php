@@ -7,7 +7,7 @@ namespace LG\Domain\Transaction;
 use LG\Shared\Domain\ValueObject\StringValueObject;
 
 final class TransactionStatus extends StringValueObject {
-    private const VALID_STATUSES = ['PENDING', 'COMPLETED', 'DENIED', 'PENDING_EMAIL'];
+    private const VALID_STATUSES = ['PENDING', 'COMPLETED', 'DENIED', 'PENDING_EMAIL', 'FAILED_EMAIL'];
 
     public function __construct(string $value)
     {

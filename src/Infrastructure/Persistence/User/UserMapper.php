@@ -12,7 +12,7 @@ use LG\Domain\Wallet\WalletId;
 
 class UserMapper
 {
-    public static function mapUser(array $userData): User
+    public static function mapUserFromDb(array $userData): User
     {
         return new User(
             new UserId($userData['id']),
@@ -26,7 +26,7 @@ class UserMapper
         );
     }
 
-    public static function mapUserWithoutId(array $userData): User
+    public static function mapUser(array $userData): User
     {
         $timestamp = Utils::newDate();
 

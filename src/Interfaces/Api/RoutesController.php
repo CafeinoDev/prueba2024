@@ -20,8 +20,11 @@ final class RoutesController  {
         $router->get("/", [\LG\Ping::class, 'ping']);
 
         // API Endpoints
-        $router->get(self::API_PATH  . "/users", [\LG\App\Controllers\UserController::class, 'all']);
-        $router->post(self::API_PATH . "/user", [\LG\App\Controllers\UserController::class, 'create']);
-        $router->get(self::API_PATH  . "/user/{id}", [\LG\App\Controllers\UserController::class, 'view']);
+        $router->get (self::API_PATH  .  "/users",     [\LG\App\Controllers\User\UserController::class, 'all']);
+        $router->post(self::API_PATH  .  "/user",      [\LG\App\Controllers\User\UserController::class, 'create']);
+        $router->get (self::API_PATH  .  "/user/{id}", [\LG\App\Controllers\User\UserController::class, 'view']);
+
+        // Transaction Post
+        $router->post(self::API_PATH  .  "/transaction", [\LG\App\Controllers\Transactions\TransactionController::class, 'create']);
     }
 }

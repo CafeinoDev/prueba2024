@@ -2,22 +2,23 @@
 
 declare(strict_types=1);
 
-namespace LG\App\Controllers;
+namespace LG\App\Controllers\User;
 
-use http\Exception\InvalidArgumentException;
 use LG\App\Services\User\UserService;
-use LG\App\Services\User\UserServiceInterface;
 use LG\App\Shared\BaseController;
 use LG\App\Shared\Validator;
+use LG\Domain\User\User;
+use LG\Domain\User\UserId;
+use LG\Infrastructure\Persistence\User\UserMapper;
 use LG\Infrastructure\Persistence\User\UserRepository;
 
-final class UserController extends BaseController implements UserServiceInterface
+final class UserController extends BaseController implements UserControllerInterface
 {
     protected readonly UserRepository $userRepository;
     protected readonly UserService    $userService;
-    protected readonly array          $data;
+    protected readonly ?array          $data;
     protected readonly Validator      $validator;
-    public array|null                     $params;
+    public ?array                 $params;
 
     public function __construct()
     {
@@ -25,6 +26,22 @@ final class UserController extends BaseController implements UserServiceInterfac
         $this->userService    = new UserService();
         $this->data           = $this->request();
         $this->validator      = new Validator();
+    }
+
+    public function all(): void
+    {
+        try {
+            $res = $this->userService->searchAll($this->userRepository);
+
+            $this->jsonResponse([
+                'message' => 'Users fetched successfully',
+                'data' => $res
+            ], 200);
+        } catch (\Exception $exception) {
+            $this->jsonResponse([
+                'message' => 'Error fetching users: ' . $exception->getMessage()
+            ], $exception->getCode());
+        }
     }
 
     public function create(): void
@@ -40,10 +57,16 @@ final class UserController extends BaseController implements UserServiceInterfac
                     'balance'   => ['required']
                 ]
             );
-            $res = $this->userService->create($this->data, $this->userRepository);
+
+            $this->userService->create(
+                UserMapper::mapUser($this->data),
+                $this->userRepository,
+                $this->data['balance'],
+                $this->data['password'],
+            );
+
             $this->jsonResponse([
-                'message' => 'The user has been created',
-                'data' => json_encode($res)
+                'message' => 'User register successfully'
             ], 201);
         } catch (\Exception $exception) {
             $this->jsonResponse([
@@ -61,7 +84,8 @@ final class UserController extends BaseController implements UserServiceInterfac
                     'id' => ['required', 'isNumeric']
                 ]);
 
-            $user = $this->userService->view((int)$this->params['id'], $this->userRepository);
+            $userId = new UserId((int)$this->params['id']);
+            $user = $this->userService->view($userId, $this->userRepository);
 
             $this->jsonResponse([
                 'data' => $user
@@ -71,5 +95,10 @@ final class UserController extends BaseController implements UserServiceInterfac
                 'message' => 'Error consulting the user: ' . $exception->getMessage()
             ], $exception->getCode());
         }
+    }
+
+    public function searchAll(): ?array
+    {
+        // TODO: Implement searchAll() method.
     }
 }

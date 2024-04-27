@@ -14,7 +14,7 @@ abstract class BaseController {
         echo json_encode($data);
     }
 
-    protected function request(): array
+    protected function request(): ?array
     {
         return json_decode(file_get_contents('php://input'), true);
     }

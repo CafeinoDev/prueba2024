@@ -8,11 +8,13 @@ use LG\Domain\Wallet\WalletBalance;
 
 interface UserRepositoryInterface
 {
-    public function save(User $user, WalletBalance $balance, string $password): int;
+    public function save(User $user, WalletBalance $balance, string $password): void;
 
     public function update(User $user): User;
 
-    public function search(int $id): ?array;
+    public function search(UserId $id): ?array;
+
+    public function searchAll(): ?array;
 
     public function searchByEmail(string $email): ?User;
 

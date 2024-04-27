@@ -14,6 +14,8 @@ spl_autoload_register(function($class) {
     require \LG\Interfaces\App\Utils::basePath("{$class}.php");
 });
 
+include 'bootstrap.php';
+
 $router = Router::getRouter();
 RoutesController::registerRoutes($router);
 

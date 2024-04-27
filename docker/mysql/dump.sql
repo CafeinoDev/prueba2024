@@ -61,15 +61,15 @@ CREATE TABLE `users` (
   `email` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
   `wallet_id` int DEFAULT NULL,
-  `user_type` varchar(30) NOT NULL,
+  `user_type` varchar(30) NOT NULL DEFAULT 'REGULAR',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `document_UNIQUE` (`document`),
   UNIQUE KEY `email_UNIQUE` (`email`),
   KEY `WID_idx` (`wallet_id`),
-  CONSTRAINT `WID` FOREIGN KEY (`wallet_id`) REFERENCES `wallet` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `WID` FOREIGN KEY (`wallet_id`) REFERENCES `wallets` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -78,33 +78,34 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Andy Alvarado','99887766','andy@yopmail.com','12345678',NULL,'REGULAR','2024-01-01 05:00:00','2024-01-01 05:00:00');
+INSERT INTO `users` VALUES (1,'Andy Alvarado','99887766','andy@yopmail.com','$2y$10$cYShBi05uaqWDwsphJbQdOSOqBtqPuzX3q3iN3ZT3a1qr/78DWU/S',1,'REGULAR','2024-01-01 05:00:00','2024-01-01 05:00:00'),(2,'Andy Alvarado','11223344','andy3@yopmail.com','$2y$10$cYShBi05uaqWDwsphJbQdOSOqBtqPuzX3q3iN3ZT3a1qr/78DWU/S',23,'REGULAR','2024-04-26 14:48:58','2024-04-26 14:48:58'),(3,'Andy Alvarado','11223324','andy5@yopmail.com','$2y$10$sFFR/4RlarMIlUoneMqdk.PEhiLwGp5cRbeYuc0ZKOB40LTTKon5W',24,'REGULAR','2024-04-26 19:29:35','2024-04-26 19:29:35'),(4,'Andy Alvarado','14223644','andy4@yopmail.com','$2y$10$Uec4fz7yRggAN0sPE7CO7OtMFoRgKatFSerM5Xgqv6K3xYC1YyuIK',25,'REGULAR','2024-04-26 20:03:07','2024-04-26 20:03:07'),(5,'Andy Alvarado','14223664','andy6@yopmail.com','$2y$10$9UZDex8XkhKZ/jtgxEVMt.PyCfM5UBv8pgoEf.3aLrh7rB96aK2jO',26,'REGULAR','2024-04-26 20:03:16','2024-04-26 20:03:16'),(6,'Andy Alvarado','17223664','andy7@yopmail.com','$2y$10$HgUxiaOmdj6OCqv291cjtulXl5lV.EAi2SRmgb0fkiz3zEitLPtKC',27,'REGULAR','2024-04-26 20:03:20','2024-04-26 20:03:20'),(7,'Andy Alvarado','87223664','andy8@yopmail.com','$2y$10$O.qyxLbkyLG0SuIR0jS8KOasvqkZIWi6G42hlE6y1TaImocbBe.P.',28,'REGULAR','2024-04-26 20:03:30','2024-04-26 20:03:30'),(8,'Andy Alvarado','87223694','andy9@yopmail.com','$2y$10$xjZFFykH5NCdt49iGo7/t.Y79fgzQeLdTLGMK8hNHa0NvnVVD2n7.',29,'REGULAR','2024-04-26 20:03:53','2024-04-26 20:03:53'),(9,'Andy Alvarado','87253694','andy10@yopmail.com','$2y$10$QJxSN8liPtT1K5ZUtmBjx.W.5mcz.T49WYvc912NJ23Evd88ivAQq',30,'MERCHANT','2024-04-26 20:05:03','2024-04-26 20:05:03'),(10,'Andy Alvarado','87533694','andy11@yopmail.com','$2y$10$HJjWiCmG0UgzRz7EgSw4I.ekRgHVUBu/Xh51kg0qiu2qqSXXWpRMS',31,'MERCHANT','2024-04-26 20:05:32','2024-04-26 20:05:32');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `wallet`
+-- Table structure for table `wallets`
 --
 
-DROP TABLE IF EXISTS `wallet`;
+DROP TABLE IF EXISTS `wallets`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `wallet` (
+CREATE TABLE `wallets` (
   `id` int NOT NULL AUTO_INCREMENT,
   `balance` float NOT NULL DEFAULT '0',
   `created_at` timestamp NOT NULL,
   `updated_at` timestamp NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `wallet`
+-- Dumping data for table `wallets`
 --
 
-LOCK TABLES `wallet` WRITE;
-/*!40000 ALTER TABLE `wallet` DISABLE KEYS */;
-/*!40000 ALTER TABLE `wallet` ENABLE KEYS */;
+LOCK TABLES `wallets` WRITE;
+/*!40000 ALTER TABLE `wallets` DISABLE KEYS */;
+INSERT INTO `wallets` VALUES (1,500,'2024-01-01 05:00:00','2024-01-01 05:00:00'),(23,100,'2024-04-26 14:48:58','2024-04-26 14:48:58'),(24,100,'2024-04-26 19:29:35','2024-04-26 19:29:35'),(25,50,'2024-04-26 20:03:07','2024-04-26 20:03:07'),(26,50,'2024-04-26 20:03:16','2024-04-26 20:03:16'),(27,50,'2024-04-26 20:03:20','2024-04-26 20:03:20'),(28,50,'2024-04-26 20:03:30','2024-04-26 20:03:30'),(29,50,'2024-04-26 20:03:53','2024-04-26 20:03:53'),(30,50,'2024-04-26 20:05:03','2024-04-26 20:05:03'),(31,50,'2024-04-26 20:05:32','2024-04-26 20:05:32');
+/*!40000 ALTER TABLE `wallets` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -116,4 +117,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-04-26  3:17:13
+-- Dump completed on 2024-04-26 15:06:11

@@ -7,9 +7,8 @@ namespace LG\Domain\User;
 use LG\Domain\Shared\CreatedAt;
 use LG\Domain\Shared\UpdatedAt;
 use LG\Domain\Wallet\WalletId;
-use LG\Shared\Domain\Aggregate\AggregateRoot;
 
-final class User extends AggregateRoot
+final class User
 {
     public function __construct(
         private readonly UserId       $id,
@@ -32,7 +31,7 @@ final class User extends AggregateRoot
         CreatedAt    $createdAt,
         UpdatedAt    $updatedAt
     ): self {
-        return new self(
+        $user = new self(
             $id,
             $fullName,
             $document,
@@ -42,6 +41,8 @@ final class User extends AggregateRoot
             $createdAt,
             $updatedAt
         );
+
+        return $user;
     }
 
     public function id(): UserId
