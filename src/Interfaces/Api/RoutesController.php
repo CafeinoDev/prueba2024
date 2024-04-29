@@ -27,18 +27,9 @@ final class RoutesController  {
      */
     public static function registerRoutes(
         Router $router,
-        UserRepository $userRepository,
-        TransactionRepository $transactionRepository
+        UserController $userController,
+        TransactionController $transactionController
     ): void {
-        // Dependencies
-        $userService = new UserService();
-        $transactionService = new TransactionService();
-        $validator = new Validator();
-
-        // Initialize controllers
-        $userController = new UserController($userRepository, $userService, $validator);
-        $transactionController = new TransactionController($transactionService, $transactionRepository, $userRepository, $validator);
-
         // API Endpoints
         $router->get (self::API_PATH  .  "/users",     [$userController, 'all']);
         $router->post(self::API_PATH  .  "/user",      [$userController, 'create']);
