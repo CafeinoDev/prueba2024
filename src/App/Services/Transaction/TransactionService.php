@@ -6,7 +6,6 @@ namespace LG\App\Services\Transaction;
 
 use LG\Domain\Transaction\Transaction;
 use LG\Domain\Transaction\TransactionId;
-use LG\Domain\Transaction\TransactionServiceInterface;
 use LG\Domain\Transaction\TransactionStatus;
 use LG\Domain\User\UserId;
 use LG\Domain\Wallet\WalletId;

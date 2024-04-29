@@ -4,31 +4,34 @@ declare(strict_types=1);
 
 namespace LG\App\Controllers\Transactions;
 
-use LG\App\Services\Transaction\TransactionService;
+use LG\App\Services\Transaction\TransactionServiceInterface;
 use LG\App\Shared\BaseController;
 use LG\App\Shared\Validator;
 use LG\Domain\Transaction\Event\TransactionCreated;
+use LG\Domain\Transaction\TransactionRepositoryInterface;
+use LG\Domain\User\UserRepositoryInterface;
 use LG\Infrastructure\Event\SimpleEventDispatcher;
 use LG\Infrastructure\Persistence\Transaction\TransactionMapper;
-use LG\Infrastructure\Persistence\Transaction\TransactionRepository;
-use LG\Infrastructure\Persistence\User\UserRepository;
 
 final class TransactionController extends BaseController implements TransactionControllerInterface
 {
-    protected readonly TransactionRepository   $transactionRepository;
-    protected readonly UserRepository          $userRepository;
-    protected readonly TransactionService      $transactionService;
-    protected readonly ?array                  $data;
-    protected readonly Validator               $validator;
-    public ?array                              $params;
+    protected readonly TransactionServiceInterface $transactionService;
+    protected readonly TransactionRepositoryInterface $transactionRepository;
+    protected readonly UserRepositoryInterface $userRepository;
+    protected readonly Validator $validator;
 
-    public function __construct()
-    {
-        $this->transactionRepository = new TransactionRepository();
-        $this->data                  = $this->request();
-        $this->validator             = new Validator();
-        $this->transactionService    = new TransactionService();
-        $this->userRepository       = new UserRepository();
+    public function __construct(
+        TransactionServiceInterface $transactionService,
+        TransactionRepositoryInterface $transactionRepository,
+        UserRepositoryInterface $userRepository,
+        Validator $validator
+    ) {
+        $this->transactionService = $transactionService;
+        $this->transactionRepository = $transactionRepository;
+        $this->userRepository = $userRepository;
+        $this->validator = $validator;
+
+        parent::__construct();
     }
 
     /**
@@ -51,7 +54,7 @@ final class TransactionController extends BaseController implements TransactionC
             /**
              * Creamos y persistimos la transacción en la base de datos.
              * Se realiza la deducción de la cuenta del remitente.
-             * Se añade el monto a la cuenta del destinatario
+             * Se añade el monto a la cuenta del destinatario.
              * En caso de que la transacción no sea autorizada, se revierte.
              */
             $transaction = $this->transactionService->create(

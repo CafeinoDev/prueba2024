@@ -4,7 +4,14 @@ declare(strict_types=1);
 
 namespace LG\Interfaces\Api;
 
+use LG\App\Services\Transaction\TransactionService;
+use LG\App\Services\User\UserService;
+use LG\App\Shared\Validator;
+use LG\Infrastructure\Persistence\Transaction\TransactionRepository;
+use LG\Infrastructure\Persistence\User\UserRepository;
 use LG\Interfaces\App\Router;
+use \LG\App\Controllers\User\UserController;
+use \LG\App\Controllers\Transactions\TransactionController;
 
 final class RoutesController  {
     public const API_PATH = '/api/v1';
@@ -17,14 +24,23 @@ final class RoutesController  {
      */
     public static function registerRoutes(Router $router): void
     {
-        $router->get("/", [\LG\Ping::class, 'ping']);
+        // Dependencies
+        $userRepository = new UserRepository();
+        $userService = new UserService();
+        $transactionRepository = new TransactionRepository();
+        $transactionService = new TransactionService();
+        $validator = new Validator();
+
+        // Initialize controllers
+        $userController = new UserController($userRepository, $userService, $validator);
+        $transactionController = new TransactionController($transactionService, $transactionRepository, $userRepository, $validator);
 
         // API Endpoints
-        $router->get (self::API_PATH  .  "/users",     [\LG\App\Controllers\User\UserController::class, 'all']);
-        $router->post(self::API_PATH  .  "/user",      [\LG\App\Controllers\User\UserController::class, 'create']);
-        $router->get (self::API_PATH  .  "/user/{id}", [\LG\App\Controllers\User\UserController::class, 'view']);
+        $router->get (self::API_PATH  .  "/users",     [$userController, 'all']);
+        $router->post(self::API_PATH  .  "/user",      [$userController, 'create']);
+        $router->get (self::API_PATH  .  "/user/{id}", [$userController, 'view']);
 
         // Transaction Post
-        $router->post(self::API_PATH  .  "/transaction", [\LG\App\Controllers\Transactions\TransactionController::class, 'create']);
+        $router->post(self::API_PATH  .  "/transaction", [$transactionController, 'create']);
     }
 }

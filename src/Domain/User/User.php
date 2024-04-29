@@ -14,25 +14,25 @@ use LG\Domain\Wallet\WalletId;
 final class User
 {
     public function __construct(
-        private readonly UserId       $id,
+        private readonly ?UserId $id,
         private readonly UserFullName $fullName,
         private readonly UserDocument $document,
-        private readonly UserEmail    $email,
-        private readonly WalletId     $walletId,
-        private readonly UserType     $userType,
-        private readonly CreatedAt    $createdAt,
-        private UpdatedAt             $updatedAt
+        private readonly UserEmail $email,
+        private readonly ?WalletId $walletId,
+        private readonly UserType $userType,
+        private readonly CreatedAt $createdAt,
+        private UpdatedAt $updatedAt
     ) {}
 
     public static function create(
-        UserId       $id,
+        ?UserId $id,
         UserFullName $fullName,
         UserDocument $document,
-        UserEmail    $email,
-        WalletId     $walletId,
-        UserType     $userType,
-        CreatedAt    $createdAt,
-        UpdatedAt    $updatedAt
+        UserEmail $email,
+        ?WalletId $walletId,
+        UserType $userType,
+        CreatedAt $createdAt,
+        UpdatedAt $updatedAt
     ): self {
         $user = new self(
             $id,

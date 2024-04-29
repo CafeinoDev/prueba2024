@@ -14,7 +14,7 @@ use LG\Domain\User\UserId;
 final class Transaction
 {
     public function __construct(
-        private TransactionId $id,
+        private ?TransactionId $id,
         private readonly UserId $senderId,
         private readonly UserId $receiverId,
         private readonly TransactionAmount $amount,

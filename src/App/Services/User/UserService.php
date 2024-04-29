@@ -9,7 +9,7 @@ use LG\Domain\Wallet\WalletBalance;
 use LG\Domain\User\User;
 use LG\Infrastructure\Persistence\User\UserRepository;
 
-final class UserService
+final class UserService implements UserServiceInterface
 {
     /**
      * Busca todos los usuarios

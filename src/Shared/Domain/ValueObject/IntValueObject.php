@@ -6,9 +6,9 @@ namespace LG\Shared\Domain\ValueObject;
 
 abstract class IntValueObject
 {
-    public function __construct(protected int $value) {}
+    public function __construct(protected ?int $value) {}
 
-    final public function value(): int
+    final public function value(): ?int
     {
         return $this->value;
     }

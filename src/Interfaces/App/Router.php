@@ -78,17 +78,12 @@ class Router
         $controller = $result['controller'];
         $function = $result['method'];
 
-        if(class_exists($controller)) {
-
-            $controllerInstance = new $controller();
-
-            if(method_exists($controllerInstance, $function)) {
-                $controllerInstance->params = $params;
-                $controllerInstance->$function($params);
+        if(get_class($controller)) {
+            if(method_exists($controller, $function)) {
+                $controller->params = $params;
+                $controller->$function($params);
                 return true;
-
             } else {
-
                 Utils::abort("No method {$function} on class {$controller}", 500);
             }
         }

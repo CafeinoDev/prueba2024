@@ -134,8 +134,8 @@ class Validator
      */
     private function maxAmount(string $field, $value, $minValue): void
     {
-        if($value < $minValue) {
-            throw new InvalidArgumentException("$field must be a minimum of $minValue", 400);
+        if($value > $minValue) {
+            throw new InvalidArgumentException("$field must be a maximum of $minValue", 400);
         }
     }
 }

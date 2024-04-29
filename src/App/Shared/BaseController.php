@@ -3,6 +3,13 @@
 namespace LG\App\Shared;
 
 abstract class BaseController {
+    public ?array                     $params;
+    protected readonly ?array         $data;
+
+    public function __construct()
+    {
+        $this->data = $this->request();
+    }
 
     protected function jsonResponse(array $data, int $status = 200): void
     {

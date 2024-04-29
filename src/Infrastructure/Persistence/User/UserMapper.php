@@ -31,11 +31,11 @@ class UserMapper
         $timestamp = Utils::newDate();
 
         return new User(
-            new UserId(0),
+            null,
             new UserFullName($userData['full_name']),
             new UserDocument($userData['document']),
             new UserEmail($userData['email']),
-            new WalletId(0),
+            null,
             new UserType($userData['user_type']),
             new CreatedAt($timestamp),
             new UpdatedAt($timestamp)

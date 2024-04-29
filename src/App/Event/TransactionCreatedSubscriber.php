@@ -31,10 +31,11 @@ class TransactionCreatedSubscriber
     }
 
     /**
-     * Maneja el evento de transacción creada, envía notificaciones al destinatario
-     * y actualiza el estado de la transacción en la base de datos.
-     * En caso de error, el estado de la transacción cambia a FAILED_EMAIL
-     * para su manejo futuro.
+     * Maneja el evento de transacción creada.
+     * Envía notificaciones al destinatario y
+     * actualiza el estado de la transacción en la base de datos.
+     * En caso de error, el estado de la transacción cambia a
+     * FAILED_EMAIL para su manejo futuro.
      *
      * @param TransactionCreated $event
      * @return void

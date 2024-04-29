@@ -4,27 +4,29 @@ declare(strict_types=1);
 
 namespace LG\App\Controllers\User;
 
-use LG\App\Services\User\UserService;
+use LG\App\Services\User\UserServiceInterface;
 use LG\App\Shared\BaseController;
 use LG\App\Shared\Validator;
 use LG\Domain\User\UserId;
+use LG\Domain\User\UserRepositoryInterface;
 use LG\Infrastructure\Persistence\User\UserMapper;
-use LG\Infrastructure\Persistence\User\UserRepository;
 
 final class UserController extends BaseController implements UserControllerInterface
 {
-    protected readonly UserRepository $userRepository;
-    protected readonly UserService    $userService;
-    protected readonly ?array         $data;
-    protected readonly Validator      $validator;
-    public ?array                     $params;
+    protected readonly UserRepositoryInterface $userRepository;
+    protected readonly UserServiceInterface $userService;
+    protected readonly Validator $validator;
 
-    public function __construct()
-    {
-        $this->userRepository = new UserRepository();
-        $this->userService    = new UserService();
-        $this->data           = $this->request();
-        $this->validator      = new Validator();
+    public function __construct(
+        UserRepositoryInterface $userRepository,
+        UserServiceInterface $userService,
+        Validator $validator
+    ) {
+        $this->userRepository = $userRepository;
+        $this->userService = $userService;
+        $this->validator = $validator;
+
+        parent::__construct();
     }
 
     /**
