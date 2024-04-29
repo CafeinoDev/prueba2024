@@ -129,7 +129,7 @@ class Validator
      *
      * @param string $field
      * @param $value
-     * @param $minValue
+     * @param $maxValue
      * @return void
      */
     private function maxAmount(string $field, $value, $maxValue): void
