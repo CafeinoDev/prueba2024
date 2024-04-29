@@ -6,6 +6,10 @@ Luego de clonar el proyecto, ejecutar `docker-compose up` en la carpeta del proy
 ### RESTful API
 Encontrará un archivo postman llamado `LG-Andy.postman_collection` en la raiz del proyecto.
 
+```
+Ruta base: http://localhost/api/v1
+```
+
 En el postman se encuentra configurada la variable `{{Entorno Local}}` con la ruta `http://localhost/api/v1`
 
 #### Endpoints
