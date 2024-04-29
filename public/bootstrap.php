@@ -13,11 +13,11 @@ use LG\Infrastructure\Persistence\Shared\SqlDatabase;
  */
 class Bootstrap
 {
-    public static function run(): void
+    public static function run(
+        UserRepository $userRepository,
+        TransactionRepository $transactionRepository
+    ): void
     {
-        $database = SqlDatabase::getInstance();
-        $userRepository = new UserRepository($database);
-        $transactionRepository = new TransactionRepository($database);
         $notificationService = new NotificationService(new EmailNotificationService());
 
         $transactionCreatedSubscriber = new TransactionCreatedSubscriber(
@@ -29,5 +29,3 @@ class Bootstrap
         SimpleEventDispatcher::getInstance()->addSubscriber($transactionCreatedSubscriber);
     }
 }
-
-Bootstrap::run();

@@ -21,15 +21,17 @@ final class RoutesController  {
      * Registro de los endpoints
      *
      * @param Router $router
+     * @param UserRepository $userRepository
+     * @param TransactionRepository $transactionRepository
      * @return void
      */
-    public static function registerRoutes(Router $router): void
-    {
+    public static function registerRoutes(
+        Router $router,
+        UserRepository $userRepository,
+        TransactionRepository $transactionRepository
+    ): void {
         // Dependencies
-        $database = SqlDatabase::getInstance();
-        $userRepository = new UserRepository($database);
         $userService = new UserService();
-        $transactionRepository = new TransactionRepository($database);
         $transactionService = new TransactionService();
         $validator = new Validator();
 
