@@ -1,4 +1,5 @@
 # Prueba técnica - Wallet
+[(Puede encontrar una versión refactorizada aquí)](https://github.com/CafeinoDev/prueba2024/tree/refactor)
 ### Instalación
 Luego de clonar el proyecto, ejecutar `docker-compose up` en la carpeta del proyecto, esto levantará automáticamente el servidor e importará la base de datos.
 
