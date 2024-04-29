@@ -7,54 +7,64 @@ namespace LG\Infrastructure\Persistence\Transaction;
 use LG\Domain\Transaction\Transaction;
 use LG\Domain\Transaction\TransactionId;
 use LG\Domain\Transaction\TransactionRepositoryInterface;
-use LG\Infrastructure\Persistence\Shared\Database;
+use LG\Infrastructure\Persistence\Shared\SqlDatabase;
+use LG\Infrastructure\Persistence\Shared\DatabaseInterface;
 use LG\Shared\Domain\Utils;
 
 class TransactionRepository implements TransactionRepositoryInterface
 {
-    private \PDO $pdo;
+    private mixed $con;
 
-    public function __construct()
+    public function __construct(DatabaseInterface $database)
     {
-        $this->pdo = Database::getInstance();
+        $this->con = $database->getConnection();
     }
 
     public function save(Transaction $transaction): ?int
     {
         $timestamp = Utils::newDate();
 
-        $stmt = $this->pdo->prepare('INSERT INTO transactions (sender_id, receiver_id, amount, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)');
+        $stmt = $this->con->prepare('INSERT INTO transactions (sender_id, receiver_id, amount, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)');
+
         try {
             $stmt->execute([$transaction->senderId()->value(), $transaction->receiverId()->value(), $transaction->amount()->value(), $transaction->status()->value(), $timestamp, $timestamp,]);
-        }catch (\Exception $exception) {
-            throw new \Exception('Error creating the transaction. ' . $exception->getMessage());
+        } catch (\Exception $exception) {
+            throw new \Exception('Error creating the transaction: ' . $exception->getMessage());
         }
 
-        $transactionId = $this->pdo->lastInsertId();
+        $transactionId = $this->con->lastInsertId();
 
         return (int)$transactionId;
     }
 
     public function findById(TransactionId $transactionId): ?Transaction
     {
-        $stmt = $this->pdo->prepare('SELECT * FROM transactions WHERE id = :id');
+        $stmt = $this->con->prepare('SELECT * FROM transactions WHERE id = :id');
 
-        $stmt->execute([
-            'id' => $transactionId->value()
-        ]);
+        try {
+            $stmt->execute([
+                'id' => $transactionId->value()
+            ]);
 
-        $transaction = $stmt->fetch(\PDO::FETCH_ASSOC);
+            $transaction = $stmt->fetch(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            throw new \Exception('Error searching: ' . $e->getMessage(), 500);
+        }
 
         return TransactionMapper::mapTransactionDb($transaction) ?? null;
     }
 
     public function updateStatus(TransactionId $transactionId, string $newStatus): void
     {
-        $stmt = $this->pdo->prepare('UPDATE transactions SET status = ? WHERE id = ?');
+        $stmt = $this->con->prepare('UPDATE transactions SET status = ? WHERE id = ?');
 
-        $stmt->execute([
-            $newStatus,
-            $transactionId->value()
-        ]);
+        try {
+            $stmt->execute([
+                $newStatus,
+                $transactionId->value()
+            ]);
+        } catch (\PDOException $e) {
+            throw new \Exception('Error updating the status: ' . $e->getMessage(), 500);
+        }
     }
 }

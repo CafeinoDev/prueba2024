@@ -13,7 +13,7 @@ use LG\Shared\Domain\Utils;
  */
 class TransactionCreated implements DomainEvent
 {
-    private Transaction        $transaction;
+    private Transaction $transaction;
 
     public function __construct(Transaction $transaction)
     {

@@ -12,6 +12,8 @@ use \InvalidArgumentException;
 class Validator
 {
     /**
+     * Valida el payload.
+     *
      * Valida las reglas definidas contra el arreglo enviado en la petición
      *
      * @param array $data

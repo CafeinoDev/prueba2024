@@ -4,40 +4,51 @@ namespace LG\Infrastructure\Persistence\User;
 
 use LG\Domain\Wallet\WalletBalance;
 use LG\Domain\Wallet\WalletId;
+use LG\Infrastructure\Persistence\Shared\DatabaseInterface;
 use LG\Shared\Domain\Utils;
 use LG\Domain\User\{User, UserId, UserRepositoryInterface, UserType};
 
-use LG\Infrastructure\Persistence\Shared\Database;
+use LG\Infrastructure\Persistence\Shared\SqlDatabase;
 
 class UserRepository implements UserRepositoryInterface
 {
-    private \PDO $pdo;
+    private mixed $con;
 
-    public function __construct()
+    public function __construct(DatabaseInterface $database)
     {
-        $this->pdo = Database::getInstance();
+        $this->con = $database->getConnection();
     }
 
     final public function updateWalletBalance(WalletId $id, float $newBalance): void
     {
         $timestamp = Utils::newDate();
 
-        $stmt = $this->pdo->prepare('UPDATE wallets SET balance = ?, updated_at = ? WHERE id = ?');
-        $stmt->execute([
-            $newBalance,
-            $timestamp,
-            $id->value()
-        ]);
+        $stmt = $this->con->prepare('UPDATE wallets SET balance = ?, updated_at = ? WHERE id = ?');
+
+        try {
+            $stmt->execute([
+                $newBalance,
+                $timestamp,
+                $id->value()
+            ]);
+        } catch (\PDOException $e) {
+            throw new \Exception('Database error: ' . $e->getMessage(), 500);
+        }
     }
 
     final public function findWallet(WalletId $id): ?array
     {
-        $stmt = $this->pdo->prepare('SELECT * FROM wallets WHERE id = :id');
-        $stmt->execute([
-            'id' => $id->value()
-        ]);
+        $stmt = $this->con->prepare('SELECT * FROM wallets WHERE id = :id');
 
-        $wallet = $stmt->fetch(\PDO::FETCH_ASSOC);
+        try {
+            $stmt->execute([
+                'id' => $id->value()
+            ]);
+
+            $wallet = $stmt->fetch(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            throw new \Exception('Database error: ' . $e->getMessage(), 500);
+        }
 
         return $wallet ?? null;
     }
@@ -46,11 +57,12 @@ class UserRepository implements UserRepositoryInterface
     {
         $timestamp = Utils::newDate();
 
-        $stmt = $this->pdo->prepare('INSERT INTO wallets (balance, created_at, updated_at) VALUES (?, ?, ?)');
+        $stmt = $this->con->prepare('INSERT INTO wallets (balance, created_at, updated_at) VALUES (?, ?, ?)');
+
         try {
             $stmt->execute([$balance->value(), $timestamp, $timestamp]);
 
-            $walletId = $this->pdo->lastInsertId();
+            $walletId = $this->con->lastInsertId();
 
             if (!$walletId) {
                 throw new \Exception('Failed to create wallet', 500);
@@ -68,8 +80,9 @@ class UserRepository implements UserRepositoryInterface
 
         $walletId = $this->createWallet($balance);
 
-        $stmt = $this->pdo->prepare('INSERT INTO users (full_name, password, email, document, wallet_id, user_type, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
-        try{
+        $stmt = $this->con->prepare('INSERT INTO users (full_name, password, email, document, wallet_id, user_type, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
+
+        try {
             $stmt->execute([
                 $user->fullName()->value(),
                 $password,
@@ -81,7 +94,7 @@ class UserRepository implements UserRepositoryInterface
                 $timestamp,
             ]);
 
-            $userId = $this->pdo->lastInsertId();
+            $userId = $this->con->lastInsertId();
 
             if (!$userId) {
                 throw new \Exception('Failed to create user', 500);
@@ -95,28 +108,38 @@ class UserRepository implements UserRepositoryInterface
     {
         $timestamp = Utils::newDate();
 
-        $stmt = $this->pdo->prepare('UPDATE users SET full_name = ?, email = ?, document = ?, updated_at = ? WHERE id = ?');
-        $stmt->execute([
-            $user->fullName()->value(),
-            $user->email()->value(),
-            $user->document()->value(),
-            $timestamp,
-            $user->id()->value(),
-        ]);
+        $stmt = $this->con->prepare('UPDATE users SET full_name = ?, email = ?, document = ?, updated_at = ? WHERE id = ?');
 
-        $user = $stmt->fetch(\PDO::FETCH_ASSOC);
+        try {
+            $stmt->execute([
+                $user->fullName()->value(),
+                $user->email()->value(),
+                $user->document()->value(),
+                $timestamp,
+                $user->id()->value(),
+            ]);
+
+            $user = $stmt->fetch(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            throw new \Exception('Database error: ' . $e->getMessage(), 500);
+        }
 
         return UserMapper::mapUser($user);
     }
 
     final public function search(UserId $userId): ?array
     {
-        $stmt = $this->pdo->prepare('SELECT id, full_name, document, email, user_type, created_at, updated_at, wallet_id FROM users WHERE id = :id');
-        $stmt->execute([
-            'id' => $userId->value()
-        ]);
+        $stmt = $this->con->prepare('SELECT id, full_name, document, email, user_type, created_at, updated_at, wallet_id FROM users WHERE id = :id');
 
-        $user = $stmt->fetch(\PDO::FETCH_ASSOC);
+        try {
+            $stmt->execute([
+                'id' => $userId->value()
+            ]);
+
+            $user = $stmt->fetch(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            throw new \Exception('Database error: ' . $e->getMessage(), 500);
+        }
 
         if(!$user)
             throw new \Exception('The user doesnt exists');
@@ -126,10 +149,15 @@ class UserRepository implements UserRepositoryInterface
 
     final public function searchAll(): ?array
     {
-        $stmt = $this->pdo->prepare('SELECT id, full_name, document, email, user_type, created_at, updated_at, wallet_id FROM users');
-        $stmt->execute();
+        $stmt = $this->con->prepare('SELECT id, full_name, document, email, user_type, created_at, updated_at, wallet_id FROM users');
 
-        $users = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        try {
+            $stmt->execute();
+
+            $users = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            throw new \Exception('Database error: ' . $e->getMessage(), 500);
+        }
 
         return $users ?? null;
     }
@@ -137,25 +165,34 @@ class UserRepository implements UserRepositoryInterface
 
     final public function searchByEmail(string $email): ?User
     {
-        $stmt = $this->pdo->prepare('SELECT id, full_name, document, email, user_type, created_at, updated_at, wallet_id FROM users WHERE email = :email');
-        $stmt->execute([
-            'email' => $email
-        ]);
+        $stmt = $this->con->prepare('SELECT id, full_name, document, email, user_type, created_at, updated_at, wallet_id FROM users WHERE email = :email');
 
-        $user = $stmt->fetch();
+        try {
+            $stmt->execute([
+                'email' => $email
+            ]);
 
+            $user = $stmt->fetch();
+        } catch (\PDOException $e) {
+            throw new \Exception('Database error: ' . $e->getMessage(), 500);
+        }
 
         return $user ? UserMapper::mapUserFromDb($user) : null;
     }
 
     final public function searchByDocument(string $document): ?User
     {
-        $stmt = $this->pdo->prepare('SELECT id, full_name, document, email, user_type, created_at, updated_at, wallet_id FROM users WHERE document = :document');
-        $stmt->execute([
-            'document' => $document
-        ]);
+        $stmt = $this->con->prepare('SELECT id, full_name, document, email, user_type, created_at, updated_at, wallet_id FROM users WHERE document = :document');
 
-        $user = $stmt->fetch();
+        try {
+            $stmt->execute([
+                'document' => $document
+            ]);
+
+            $user = $stmt->fetch();
+        } catch (\PDOException $e) {
+            throw new \Exception('Database error: ' . $e->getMessage(), 500);
+        }
 
         return $user ? UserMapper::mapUserFromDb($user) : null;
     }

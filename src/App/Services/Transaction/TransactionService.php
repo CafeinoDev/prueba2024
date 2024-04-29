@@ -59,7 +59,7 @@ final class TransactionService implements TransactionServiceInterface
          * Validamos la transacción con una aplicación externa.
          */
         $authorization = Utils::sendRequest('https://run.mocky.io/v3/1f94933c-353c-4ad1-a6a5-a1a5ce2a7abe');
-        if($authorization['message'] !== 'Autorizado') {
+        if($authorization['message'] && $authorization['message'] !== 'Autorizado') {
             /**
              * Revertimos la transacción
              */

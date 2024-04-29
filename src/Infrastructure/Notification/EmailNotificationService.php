@@ -13,6 +13,7 @@ class EmailNotificationService implements NotificationServiceInterface
 
     /**
      * Servicio para enviar notificaciòn por email.
+     *
      * Consulta una url externa (simulando el servicio).
      *
      * @param string $recipient
@@ -25,7 +26,7 @@ class EmailNotificationService implements NotificationServiceInterface
         // Enviar la notificación por medio de email
         $authorization = Utils::sendRequest('https://run.mocky.io/v3/6839223e-cd6c-4615-817a-60e06d2b9c82');
 
-        if (!$authorization) {
+        if ($authorization && !$authorization['message']) {
             throw new \Exception('Email Service unavailable');
         }
     }

@@ -7,6 +7,7 @@ namespace LG\Interfaces\Api;
 use LG\App\Services\Transaction\TransactionService;
 use LG\App\Services\User\UserService;
 use LG\App\Shared\Validator;
+use LG\Infrastructure\Persistence\Shared\SqlDatabase;
 use LG\Infrastructure\Persistence\Transaction\TransactionRepository;
 use LG\Infrastructure\Persistence\User\UserRepository;
 use LG\Interfaces\App\Router;
@@ -25,9 +26,10 @@ final class RoutesController  {
     public static function registerRoutes(Router $router): void
     {
         // Dependencies
-        $userRepository = new UserRepository();
+        $database = SqlDatabase::getInstance();
+        $userRepository = new UserRepository($database);
         $userService = new UserService();
-        $transactionRepository = new TransactionRepository();
+        $transactionRepository = new TransactionRepository($database);
         $transactionService = new TransactionService();
         $validator = new Validator();
 

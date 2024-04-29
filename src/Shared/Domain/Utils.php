@@ -45,6 +45,12 @@ class Utils
 
         curl_close($curl);
 
-        return json_decode($responseJson, true);
+        $json = json_decode($responseJson, true);
+
+        if(gettype($json) !== 'array') {
+            throw new \Exception('The external service is not a valid JSON response');
+        }
+
+        return $json;
     }
 }
